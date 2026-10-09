@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   ArrowDownRight, ArrowRight, ArrowUpRight, AudioLines, BookOpen, Check,
-  CheckCircle2, ChevronDown, Copy, Cpu, Database, Download, FileSearch,
-  Globe2, Layers3, LockKeyhole, Mail, Menu, MessageSquareText, Mic,
-  MicOff, Network, PhoneOff, Play, Radio, Send, ShieldCheck, Sparkles, X
+  CheckCircle2, Copy, Cpu, Database, Download, FileSearch,
+  Globe2, LockKeyhole, Menu, MessageSquareText, Mic,
+  MicOff, PhoneOff, Send, ShieldCheck, Sparkles, X
 } from 'lucide-react';
 import { PCMMicrophone, PCMPlayer } from './audio';
 
 type Language = 'fr' | 'en';
-type Section = 'overview' | 'technology' | 'privacy' | 'diagnostic' | 'contact';
+type Section = 'overview' | 'technology' | 'privacy' | 'diagnostic' | 'contact' | 'voice';
 type State = 'idle' | 'connecting' | 'live';
 type Transcript = { role: 'user' | 'assistant'; text: string; id: number };
 type Lead = { company: string; industry: string; team: string; challenge: string; privacy: string };
@@ -43,7 +43,6 @@ export default function App() {
   const [muted, setMuted] = useState(false);
   const [level, setLevel] = useState(0);
   const [speaking, setSpeaking] = useState(false);
-  const [section, setSection] = useState<Section>('overview');
   const [transcript, setTranscript] = useState<Transcript[]>([]);
   const [typed, setTyped] = useState('');
   const [lead, setLead] = useState<Lead>({ company: '', industry: '', team: '1–10', challenge: '', privacy: 'local' });
@@ -149,7 +148,6 @@ export default function App() {
           const valid: Section[] = ['overview', 'technology', 'privacy', 'diagnostic', 'contact'];
           if (valid.includes(message.section as Section)) {
             const next = message.section as Section;
-            setSection(next);
             document.getElementById(next)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
         } else if (message.type === 'error') {
@@ -176,7 +174,6 @@ export default function App() {
   };
 
   const moveTo = (next: Section) => {
-    setSection(next);
     setMobileOpen(false);
     document.getElementById(next)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
